@@ -1,6 +1,7 @@
 package program;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -9,13 +10,13 @@ public class Dictionary {
     private Scanner inputScanner = new Scanner(System.in);
     private HashMap<String, String> a2b;
     private String filePath; // where the dictionary is stored + loaded from
-    private FileManager a2bManager;
+    //private FileManager a2bManager;
 
-    public Dictionary(String dictName, String filePath) {
+    public Dictionary(String dictName, String filePath) throws FileNotFoundException {
         this.dictName = dictName;
         this.filePath = filePath;
         a2b = new HashMap<String, String>();
-        a2bManager = new FileManager(filePath, "dict");
+        //a2bManager = new FileManager(filePath, "dict");
 
         // v TEST v //
         // a2b.put("Test", "Test Result");
@@ -88,15 +89,17 @@ public class Dictionary {
 
         return s;
     }
-
+/*
     private class FileManager {
         File myFile;
         String type; // OPTIONS: dict,text
+        Scanner fileScanner;
         // determines which read/write methods are used
 
-        public FileManager(String fileName, String type) { // fileName requires entire relative path
+        public FileManager(String fileName, String type) throws FileNotFoundException { // fileName requires entire relative path
             myFile = new File(fileName);
             this.type = type;
+                fileScanner = new Scanner(myFile);
         }
 
         public String readFile() {
@@ -122,5 +125,5 @@ public class Dictionary {
         public void writeFile(String fileName) {
 
         }
-    }
+    }*/
 }
