@@ -6,10 +6,11 @@ import java.util.Scanner;
 
 public class Dictionary {
     private String dictName;
+    private Scanner inputScanner = new Scanner(System.in);
     private HashMap<String, String> a2b;
     private String filePath; // where the dictionary is stored + loaded from
     private FileManager a2bManager;
-    private Scanner trainScanner;
+
     public Dictionary(String dictName, String filePath) {
         this.dictName = dictName;
         this.filePath = filePath;
@@ -28,31 +29,52 @@ public class Dictionary {
     }
 
     public void trainDict() {
-        Scanner trainScanner = new Scanner(System.in);
-        String key, value, yn;
-        boolean check = true;
+        String key;
+        String value;
 
-        while (check == true) {
+        System.out.println("Enter nothing to quit");
+        while (true) {
             System.out.println("What word are you translating FROM?");
-            key = trainScanner.nextLine();
+            key = inputScanner.nextLine();
+            if(key.equalsIgnoreCase("")) {
+                break;
+            }
             System.out.println("What word are you translating TO?");
-            value = trainScanner.nextLine();
+            value = inputScanner.nextLine();
 
             System.out.println(key + " : " + value);
             a2b.put(key, value);
-
-            System.out.println("Do you want to translate another word? (y/n)");
-            yn = trainScanner.nextLine();
-            if (yn.equalsIgnoreCase("y")) {
-                check = true;
-            } else if (yn.equalsIgnoreCase("n")) {
-                check = false;
-            }
-
         }
-        trainScanner.close();
     }
 
+    public String readDict() {
+        String userKey, result;
+
+        System.out.println("Enter nothing to quit");
+        System.out.println("Word or sentence to translate: ");
+        userKey = inputScanner.nextLine();
+        result = translateInput(userKey);
+        return result;
+    }
+    private String translateInput(String userKey) {
+        String result = "";
+        String[] results = userKey.split(" ");
+        if (userKey.equalsIgnoreCase("")) {
+            return "";
+        } else {
+            for(String word : results) {
+                result += getValueFromKey(word) + " ";
+            }
+        }
+        return result;
+    }
+    private String getValueFromKey(String key) {
+        if(a2b.containsKey(key)) {
+            return a2b.get(key);
+        } else {
+            return key;
+        }
+    }
 
     @Override
     // stolen from sfarzo
@@ -61,7 +83,7 @@ public class Dictionary {
         s = s.concat(" dictionary:\n");
 
         for(String key : a2b.keySet()){
-            s = s.concat(key + " : " + a2b.get(key));
+            s = s.concat(key + " : " + a2b.get(key) + "\n");
         }
 
         return s;

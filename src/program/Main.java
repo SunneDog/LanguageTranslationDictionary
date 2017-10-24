@@ -10,6 +10,7 @@ public class Main {
     Dictionary testDict = new Dictionary("Test", ".");
     testDict.trainDict();
     System.out.print(testDict);
+    System.out.println(testDict.readDict());
     inputScanner.close();
     }
 }
