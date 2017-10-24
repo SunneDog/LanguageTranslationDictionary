@@ -7,6 +7,9 @@ public class Main {
 	// write your code here
     Scanner inputScanner = new Scanner(System.in);
 
+    Dictionary testDict = new Dictionary("Test", ".");
+    testDict.trainDict();
+    System.out.print(testDict);
     inputScanner.close();
     }
 }
