@@ -1,0 +1,6 @@
+kitten,mewl
+duck,quack
+cat,meow
+cow,moo
+goat,bleh
+dog,bark

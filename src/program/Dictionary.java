@@ -1,7 +1,7 @@
 package program;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -9,23 +9,30 @@ public class Dictionary {
     private String dictName;
     private Scanner inputScanner = new Scanner(System.in);
     private HashMap<String, String> a2b;
-    private String filePath; // where the dictionary is stored + loaded from
-    //private FileManager a2bManager;
+    private FileManager a2bManager, textManager;
 
-    public Dictionary(String dictName, String filePath) throws FileNotFoundException {
+    public Dictionary(String dictName, String filePath) {
         this.dictName = dictName;
-        this.filePath = filePath;
-        a2b = new HashMap<String, String>();
-        //a2bManager = new FileManager(filePath, "dict");
+        a2b = new HashMap<>();
+        try {
+            a2bManager = new FileManager(filePath, "dict");
+            textManager = new FileManager("text");
+        } catch(Exception e) {
+            System.out.println("Error building filemanager");
+        }
+
 
         // v TEST v //
-        // a2b.put("Test", "Test Result");
+        // a2b.put("Test.txt", "Test.txt Result");
         // ^ TEST ^//
 
         // check if dict/file combo already exists
-
         // if exists, add data from file to HashMap
-
+        if(a2bManager.getFile().exists()) {
+            a2bManager.readFile();
+        } else {
+            a2bManager.writeFile();
+        }
         // else create new file for new dict
     }
 
@@ -46,6 +53,7 @@ public class Dictionary {
             System.out.println(key + " : " + value);
             a2b.put(key, value);
         }
+        a2bManager.writeFile();
     }
 
     public String readDict() {
@@ -55,6 +63,7 @@ public class Dictionary {
         System.out.println("Word or sentence to translate: ");
         userKey = inputScanner.nextLine();
         result = translateInput(userKey);
+
         return result;
     }
     private String translateInput(String userKey) {
@@ -89,41 +98,89 @@ public class Dictionary {
 
         return s;
     }
-/*
+
+    //======================================================
+    // FileManager
+    //======================================================
+
     private class FileManager {
-        File myFile;
-        String type; // OPTIONS: dict,text
-        Scanner fileScanner;
+        protected File myFile;
+        protected String type; // OPTIONS: dict,text
+        protected Scanner fileScanner;
         // determines which read/write methods are used
 
-        public FileManager(String fileName, String type) throws FileNotFoundException { // fileName requires entire relative path
-            myFile = new File(fileName);
+        public FileManager(String myFilePath, String type) { // fileName requires entire relative path
+            this.myFile = new File(myFilePath);
             this.type = type;
+            try {
                 fileScanner = new Scanner(myFile);
+            } catch(Exception e) {
+                System.out.println("Error building file scanner");
+            }
+        }
+        public FileManager(String type) {
+            this.type = type;
         }
 
         public String readFile() {
             String result = "ERROR";
-            if(this.type.equalsIgnoreCase("dict")) {
-                result = readDict();
-            } else if(this.type.equalsIgnoreCase("text")) {
-                result = readText();
+            if(type.equalsIgnoreCase("dict")) {
+                readDictFile();
+            } else if(type.equalsIgnoreCase("text")) {
+                result = readTextFile();
             }
             return result;
         }
-        private String readDict() {
+        private void readDictFile() {
+            String key, value;
+            fileScanner.useDelimiter(",|\r\n");
+
+            while(fileScanner.hasNext()) {
+                key = fileScanner.next();
+                value = fileScanner.next();
+                System.out.println(key + " : " + value);
+                a2b.put(key, value);
+            }
+        }
+        private String readTextFile() {
             String result = "";
 
             return result;
         }
-        private String readText() {
-            String result = "";
 
-            return result;
+        public void writeFile() {
+            if (type.equalsIgnoreCase("dict")) {
+                writeDictFile(myFile);
+            } else if (type.equalsIgnoreCase("text")) {
+                writeTextFile(myFile, "");
+            }
+        }
+        public void writeFile(String text) {
+
+        }
+        private void writeDictFile(File myFile) {
+            try {
+                FileWriter writer = new FileWriter(myFile, false);
+                for(String key : a2b.keySet()) {
+                    writer.write(key + "," + a2b.get(key) + "\n");
+                }
+                writer.close();
+            } catch(Exception e) {
+                System.out.println("ERROR writing dict file");
+            }
+        }
+        private void writeTextFile(File myFile, String text) {
+            try {
+                FileWriter writer = new FileWriter(myFile, true);
+                writer.write(text);
+                writer.close();
+            } catch(Exception e) {
+                System.out.println("ERROR writing text file");
+            }
         }
 
-        public void writeFile(String fileName) {
-
+        public File getFile() {
+            return myFile;
         }
-    }*/
+    }
 }
