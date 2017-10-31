@@ -1,1 +1,1 @@
-goat goat dog cow nonTranslatableWord
+cow cow dog goat

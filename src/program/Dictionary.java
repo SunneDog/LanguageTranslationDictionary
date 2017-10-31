@@ -85,7 +85,7 @@ public class Dictionary {
         String result;
         textManager = new FileManager(filePath, "text");
 
-        result = textManager.readTextFile();
+        result = textManager.textContent;
         System.out.println("Translating: " + result);
         result = translateInput(result);
         System.out.println("Translation: " + result);

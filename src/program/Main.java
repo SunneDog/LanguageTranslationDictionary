@@ -12,7 +12,7 @@ public class Main {
     testDict.trainDict();
     System.out.println(testDict.readDict());
     testDict.translateFile("C:\\Users\\crazs\\Desktop\\FLASH DRIVE\\Language Translation Dictionary\\src\\program\\translations\\TranslatableText.txt",
-            "C:\\Users\\crazs\\Desktop\\FLASH DRIVE\\Language Translation Dictionary\\src\\translations\\" + "Translated" + "TranslatableText.txt");
+            "C:\\Users\\crazs\\Desktop\\FLASH DRIVE\\Language Translation Dictionary\\src\\program\\translations\\TranslatedTranslatableText.txt");
     inputScanner.close();
     }
 }
