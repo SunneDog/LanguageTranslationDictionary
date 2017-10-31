@@ -1,6 +1,8 @@
 kitten,mewl
+rhino,grunt
 duck,quack
 cat,meow
+bird,tweet
 cow,moo
-goat,bleh
+goat,meh
 dog,bark
