@@ -1,6 +1,7 @@
 kitten,mewl
 rhino,grunt
 duck,quack
+giraffe,silence
 cat,meow
 bird,tweet
 cow,moo

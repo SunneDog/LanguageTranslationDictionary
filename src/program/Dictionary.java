@@ -16,17 +16,13 @@ public class Dictionary {
     public Dictionary(String dictName, String filePath) {
         this.dictName = dictName;
         a2b = new HashMap<>();
+
         try {
             a2bManager = new FileManager(filePath, "dict");
         } catch(Exception e) {
-            System.out.println("Error building filemanager");
+            System.out.println("Error building filemanager; resorting to default");
             a2bManager = new FileManager("C:\\Users\\crazs\\Desktop\\FLASH DRIVE\\Language Translation Dictionary\\src\\program\\dictionaries\\Test.txt","dict");
         }
-
-
-        // v TEST v //
-        // a2b.put("Test.txt", "Test.txt Result");
-        // ^ TEST ^//
 
         // check if dict/file combo already exists
         // if exists, add data from file to HashMap
@@ -35,7 +31,6 @@ public class Dictionary {
         } else {
             a2bManager.writeFile();
         }
-        // else create new file for new dict
     }
 
     public void trainDict() {
@@ -43,16 +38,19 @@ public class Dictionary {
         String value;
 
         System.out.println("Enter nothing to quit");
+
         while (true) {
             System.out.println("What word are you translating FROM?");
             key = inputScanner.nextLine();
+
             if(key.equalsIgnoreCase("")) {
                 break;
             }
+
             System.out.println("What word are you translating TO?");
             value = inputScanner.nextLine();
-
             System.out.println(key + " : " + value);
+
             a2b.put(key, value);
         }
         a2bManager.writeFile();
@@ -71,6 +69,7 @@ public class Dictionary {
     private String translateInput(String userKey) {
         String result = "";
         String[] results = userKey.split(" ");
+
         if (userKey.equalsIgnoreCase("")) {
             return "";
         } else {
@@ -119,15 +118,13 @@ public class Dictionary {
 
     private class FileManager {
         protected File myFile;
-        protected String myFilePath;
         protected String newFilePath; // for translated text files
-        protected String type; // OPTIONS: dict,text
+        protected String type; // OPTIONS: dict,text || determins which read/writes to use
         protected String textContent; // if FileManager is for a text file, this is where the text goes
         protected Scanner fileScanner;
-        // determines which read/write methods are used
 
-        public FileManager(String myFilePath, String type) { // fileName requires entire relative path
-            this.myFilePath = myFilePath;
+
+        public FileManager(String myFilePath, String type) { // fileName requires entire relative pa
             this.myFile = new File(myFilePath);
             this.type = type;
             try {
@@ -135,6 +132,7 @@ public class Dictionary {
             } catch (FileNotFoundException e) {
                 System.out.println("Error building file scanner");
             }
+            this.newFilePath = myFilePath + "Translated.txt";
             readFile();
         }
 
